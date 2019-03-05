@@ -63,8 +63,21 @@
       position: absolute;
       top: 50%;
       transform-origin: 100%;
-      transition: all 0.5s;
-      transition-timing-function: ease-in-out;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+    }
+
+    .min-hand {
+      width: 40%;
+      margin-left: 10%;
+      background: orchid;
+    }
+
+    .hour-hand {
+      width: 30%;
+      margin-left: 20%;
+      background: green;
     }
 
   </style>
@@ -73,25 +86,28 @@
   <script>
 
 const secondHand = document.querySelector('.second-hand')
-const minuteHand = document.querySelector('.min-hand')
+const minHand = document.querySelector('.min-hand')
 const hourHand = document.querySelector('.hour-hand')
 
 function setDate() {
   const now = new Date();
 
   const hours = now.getHours()
-  const hoursDegrees = (hours*360)/24+90;
+  const hoursDegrees = (hours*360)/12+90;
   hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
 
-  const minutes = now.getMinutes()
-  const minutesDegrees = (minutes*360)/60 + 90;
-  minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+  const mins = now.getMinutes()
+  const minsDegrees = (mins*360)/60 + 90;
+  minHand.style.transform = `rotate(${minsDegrees}deg)`;
 
   const seconds = now.getSeconds()
   const secondsDegrees = (seconds*360)/60 + 90;
+  if (seconds < 60) {
+    secondHand.style.transition = 'all 0.05s';
+    secondHand.style.transitionTimingFunction = 'cubic-bezier(0.1, 2.7, 0.58, 1)';
+  } else
+  {secondHand.style.transition = 'all 0s'}
   secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
-
-  console.log(hours, minutes, seconds)
 }
 
 setInterval(setDate, 1000)
